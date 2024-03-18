@@ -1,17 +1,23 @@
+'use client'
 import Link from 'next/link';
 import React from 'react';
+import ToggleMode from './ToggleMode';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const MainNav = () => {
+  const route = usePathname()
+  const routeCN = (path: string) => cn('hover:text-primary', route == path ? 'text-primary' : '')
   return (
     <div className='flex justify-between'>
-      <div>
-        <Link href='/'>Dashboard</Link>
-        <Link href='/tickets'>Tickets</Link>
-        <Link href='/users'>Users</Link>
+      <div className='gap-2 flex items-center'>
+        <Link className={routeCN('/')} href='/'>Dashboard</Link>
+        <Link className={routeCN('/tickets')} href='/tickets'>Tickets</Link>
+        <Link className={routeCN('/users')} href='/users'>Users</Link>
       </div>
       <div className='flex items-center gap-2'>
-        <Link href='/'>Logout</Link>
-        <Link href='/'>Dark</Link>
+        <Link className={routeCN('/logout')} href='/'>Logout</Link>
+        <ToggleMode />
       </div>
     </div>
   );
