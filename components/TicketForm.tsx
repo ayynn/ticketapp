@@ -12,34 +12,50 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Button } from './ui/button'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { Ticket } from '@prisma/client'
+import { useToast } from './ui/use-toast'
 
 type TicketFormData = z.infer<typeof ticketSchema>
 
-const TicketForm = () => {
+interface Props {
+    ticket?: Ticket
+}
+
+const TicketForm = ({ ticket }: Props) => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState("")
     const router = useRouter()
+    const { toast } = useToast()
 
     const form = useForm<TicketFormData>({
         resolver: zodResolver(ticketSchema),
+        defaultValues: {
+            ...ticket,
+            title: ticket?.title || "",
+            description: ticket?.description || ""
+        }
     })
     async function onSubmit(values: TicketFormData) {
         try {
             setIsSubmitting(true)
             setError("")
-            const res = await axios('/api/tickets', {
-                method: "POST",
+            const res = await axios(`/api/tickets${ticket ? `/${ticket.id}` : ''}`, {
+                method: ticket ? "PATCH" : "POST",
                 data: values,
             })
-            console.log('res', res)
             setIsSubmitting(false)
+            if (res.status >= 200 && res.status <= 300) {
+                toast({
+                    title: (ticket ? "Edit" : "Create") + "Ticket Success",
+                    duration: 2000
+                })
+            }
             router.push("/tickets")
             router.refresh()
         } catch (error) {
             setError("An unexpected error occurred")
             setIsSubmitting(false)
         }
-        console.log(values)
     }
     return (
         <div className='rounded-medium border w-full p-4'>
@@ -71,7 +87,7 @@ const TicketForm = () => {
                                     </SelectContent>
                                 </Select>
                             </FormItem>
-                        )}></FormField>
+                        )} />
                         <FormField control={form.control} name="priority" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Priority</FormLabel>
@@ -88,9 +104,14 @@ const TicketForm = () => {
                                     </SelectContent>
                                 </Select>
                             </FormItem>
-                        )}></FormField>
+                        )} />
                     </div>
-                    <Button type="submit" disabled={isSubmitting}>Submit</Button>
+                    <footer className='flex justify-between'>
+                        <Button type="submit" disabled={isSubmitting}>{ticket ? 'Edit Ticket' : 'Create Ticket'}</Button>
+                        <Button type="button" onClick={() => {
+                            router.back()
+                        }}>Back</Button>
+                    </footer>
                 </form>
             </Form>
         </div>

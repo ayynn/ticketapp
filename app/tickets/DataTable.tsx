@@ -1,8 +1,11 @@
+"use client"
 import TicketPriority from '@/components/TicketPriority'
 import TicketStatusBadge from '@/components/TicketStatusBadge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Ticket } from '@prisma/client'
 import dayjs from 'dayjs'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 interface Props {
@@ -27,7 +30,8 @@ function DataTable({ tickets }: Props) {
                             return (
                                 <TableRow key={_.id} data-href="/">
                                     <TableCell>
-                                        {_.title}
+                                        <Link className='hover:underline' href={`/tickets/${_.id}`}>
+                                            {_.title}</Link>
                                     </TableCell>
                                     <TableCell>
                                         <div className='flex justify-center'>

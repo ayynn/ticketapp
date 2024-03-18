@@ -7,7 +7,7 @@ import { buttonVariants } from '@/components/ui/button'
 const Tickets = async () => {
   const tickets = await prisma.ticket.findMany()
   return (
-    <div>
+    <div className='px-5 mb-5'>
       <Link href="/tickets/new" className={buttonVariants({ variant: "default" })}>New Ticket</Link>
       <DataTable tickets={tickets} />
     </div>
