@@ -11,16 +11,17 @@ import {
 import TicketStatusBadge from '@/components/TicketStatusBadge'
 import TicketPriority from '@/components/TicketPriority'
 import dayjs from 'dayjs'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import ReactMarkDown from 'react-markdown'
-
+import DeleteTicketButton from '@/app/tickets/[id]/DeleteTicketButton'
 
 interface Props {
     ticket: Ticket
 }
 
 const TicketDetail = ({ ticket }: Props) => {
+
     return (
         <div className='lg:grid lg:grid-cols-4 px-4'>
             <Card className=' mb-4 lg:col-span-3'>
@@ -43,9 +44,7 @@ const TicketDetail = ({ ticket }: Props) => {
                 <Link href={`/tickets/edit/${ticket.id}`} className={`${buttonVariants({
                     variant: "default"
                 })}`}>Edit Ticket</Link>
-                <Link href={`/tickets/delete/${ticket.id}`} className={`${buttonVariants({
-                    variant: "default"
-                })}`}>Delete Ticket</Link>
+                <DeleteTicketButton id={ticket.id} />
             </div>
         </div>
 

@@ -1,22 +1,32 @@
 "use client"
+import Pagination from '@/components/Pagination'
 import TicketPriority from '@/components/TicketPriority'
 import TicketStatusBadge from '@/components/TicketStatusBadge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Ticket } from '@prisma/client'
 import dayjs from 'dayjs'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import React from 'react'
 
 interface Props {
     tickets: Ticket[]
+    searchParams: {
+        totalCount: number
+        pageSize: number
+        page: string
+    }
 }
 
-function DataTable({ tickets }: Props) {
+function DataTable({ tickets, searchParams }: Props) {
+    const paramsPage = searchParams.page
+    const pageSize = searchParams.pageSize
+    const page = parseInt(paramsPage) || 1
+
     return (
-        <div className='w-full mt-5'>
-            <div className='rounded-ed sm:border'>
-                <Table>
+        <div className='w-full mt-5 h-0 flex-1 mb-5'>
+            <div className='rounded-ed sm:border h-full flex flex-col'>
+                <Table className='h-0 flex-1 '>
                     <TableHeader>
                         <TableRow>
                             <TableHead>Title</TableHead>
@@ -48,6 +58,7 @@ function DataTable({ tickets }: Props) {
                         })}
                     </TableBody>
                 </Table>
+                <Pagination itemCount={searchParams.totalCount} pageSize={pageSize} currentPage={page}></Pagination>
             </div>
         </div>
     )

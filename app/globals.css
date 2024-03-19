@@ -60,3 +60,10 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer components {
+    .no-input-number-spin::-webkit-inner-spin-button {
+       -webkit-appearance: none;
+       margin: 0;
+   }
+}

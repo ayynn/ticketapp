@@ -10,7 +10,7 @@ import SimpleMDE from "react-simplemde-editor"
 import "easymde/dist/easymde.min.css"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { Button } from './ui/button'
-import axios from 'axios'
+import axios from '@/lib/request'
 import { useRouter } from 'next/navigation'
 import { Ticket } from '@prisma/client'
 import { useToast } from './ui/use-toast'
@@ -39,12 +39,14 @@ const TicketForm = ({ ticket }: Props) => {
         try {
             setIsSubmitting(true)
             setError("")
-            const res = await axios(`/api/tickets${ticket ? `/${ticket.id}` : ''}`, {
+            const { data, success } = await axios({
+                url: `/api/tickets${ticket ? `/${ticket.id}` : ''}`,
                 method: ticket ? "PATCH" : "POST",
                 data: values,
             })
+            console.log('resss', data, success)
             setIsSubmitting(false)
-            if (res.status >= 200 && res.status <= 300) {
+            if (success) {
                 toast({
                     title: (ticket ? "Edit" : "Create") + "Ticket Success",
                     duration: 2000

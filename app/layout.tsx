@@ -4,6 +4,7 @@ import './globals.css'
 import MainNav from '@/components/MainNav'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
+import { cn } from '@/lib/utils'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -16,14 +17,14 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/4.7.0/css/font-awesome.min.css" />
       </head>
-      <body className={inter.className} >
+      <body className={cn(inter.className, 'h-screen w-full flex flex-col')} >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -34,8 +35,8 @@ export default function RootLayout({
               <MainNav />
             </div>
           </nav>
-          <main className='flex flex-col items-center'>
-            <div className='max-w-6xl w-full'>
+          <main className='flex flex-col items-center flex-1 h-0'>
+            <div className='max-w-6xl w-full h-full'>
               {children}
             </div>
           </main>
