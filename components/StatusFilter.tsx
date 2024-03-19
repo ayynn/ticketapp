@@ -1,0 +1,50 @@
+"use client"
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { useRef } from 'react'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+
+const statuses: { label: string, value?: string }[] = [
+    {
+        label: 'Open / Started',
+    },
+    {
+        label: 'Open',
+        value: 'OPEN'
+    },
+    {
+        label: 'Started',
+        value: 'STARTED'
+    },
+    {
+        label: 'Closed',
+        value: 'CLOSED'
+    },
+]
+
+const StatusFilter = (prop: React.ComponentProps<typeof Select>) => {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    return (
+        <Select {...prop} defaultValue={searchParams.get('status') || ''} onValueChange={(status) => {
+            const params = new URLSearchParams(searchParams)
+            if (status) params.set("status", status)
+            const query = params.size ? `?${params.toString()}` : "0"
+            router.push(query)
+        }}>
+            <SelectTrigger>
+                <SelectValue placeholder="Filter by Status" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup>
+                    {
+                        statuses.map(status => (
+                            <SelectItem key={status.label} value={status.value || "0"}>{status.label}</SelectItem>
+                        ))
+                    }
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+    )
+}
+
+export default StatusFilter

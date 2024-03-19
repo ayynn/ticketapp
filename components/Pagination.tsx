@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
     Pagination,
@@ -19,6 +19,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Input } from './ui/input'
+import { Button } from './ui/button'
 
 interface Props {
     itemCount: number
@@ -31,8 +32,9 @@ function PaginationC({ itemCount, pageSize, currentPage }: Props) {
     const router = useRouter()
     const searchParams = useSearchParams()
 
+    const inputRef = useRef<HTMLInputElement>(null)
+
     function changePage(pageNum: number) {
-        console.log('change page', pageNum)
         const params = new URLSearchParams(searchParams)
         params.set('page', pageNum.toString())
         return router.push("?" + params.toString())
@@ -53,16 +55,23 @@ function PaginationC({ itemCount, pageSize, currentPage }: Props) {
     if (distanceFromEnd <= 2) {
         paginationRange = paginationRange.map(item => item + distanceFromEnd - 2)
     }
-    function inputBlur(e: React.FocusEvent<HTMLInputElement>) {
-        const value = +e.target.value
+    function goPage() {
+        const e = inputRef.current
+        if (!e) return
+        const value = +e.value
         if (value <= 1) {
-            e.target.value = '1'
+            e.value = '1'
         } else if (value >= pageCount) {
-            e.target.value = pageCount.toString()
+            e.value = pageCount.toString()
         }
-        let targetValue = parseInt(e.target.value)
+        let targetValue = parseInt(e.value)
         if (targetValue !== currentPage) {
             changePage(targetValue)
+        }
+    }
+    function inputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key == 'Enter' || e.code == 'Enter') {
+            goPage()
         }
     }
     return (
@@ -83,7 +92,7 @@ function PaginationC({ itemCount, pageSize, currentPage }: Props) {
                     <PaginationNext onClick={() => changePage(currentPage + 1)} disabled={currentPage == pageCount} />
                 </PaginationItem>
             </PaginationContent>
-            <Input min={1} max={pageCount} step={1} type="number" onBlur={inputBlur} className='w-[80px] mr-4 no-input-number-spin' placeholder='to page'></Input>
+            <Input onBlur={goPage} onKeyDown={inputKeyDown} min={1} max={pageCount} step={1} type="number" ref={inputRef} className='w-[80px] mr-4 no-input-number-spin' placeholder='to page' />
             <Select defaultValue={pageSize.toString() || '10'} onValueChange={selectValueChange}>
                 <SelectTrigger className="w-[100px]">
                     <SelectValue />
