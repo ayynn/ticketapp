@@ -5,12 +5,13 @@ import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import StatusFilter from '@/components/StatusFilter'
-import { Status } from '@prisma/client'
+import { Status, Ticket } from '@prisma/client'
 
 interface SearchParams {
   page: string
   pageSize: string
   status: Status | '0'
+  orderBy: keyof Ticket
 }
 
 const Tickets = async ({ searchParams }: { searchParams: SearchParams }) => {
@@ -35,6 +36,7 @@ const Tickets = async ({ searchParams }: { searchParams: SearchParams }) => {
     take: pageSize,
     skip: (parseInt(searchParams.page || '1') - 1) * pageSize,
     where,
+    orderBy: searchParams.orderBy ? { [searchParams.orderBy]: 'desc' } : undefined
   })
   const ticketCount = await prisma.ticket.count({
     where
@@ -51,7 +53,9 @@ const Tickets = async ({ searchParams }: { searchParams: SearchParams }) => {
       <DataTable searchParams={{
         totalCount: ticketCount,
         pageSize,
-        page: searchParams.page || '1'
+        page: searchParams.page || '1',
+        orderBy: searchParams.orderBy,
+        status: searchParams.status
       }} tickets={tickets} />
     </div>
   )

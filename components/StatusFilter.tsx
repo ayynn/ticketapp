@@ -1,6 +1,6 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useRef } from 'react'
+import React from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 const statuses: { label: string, value?: string }[] = [
@@ -28,6 +28,7 @@ const StatusFilter = (prop: React.ComponentProps<typeof Select>) => {
         <Select {...prop} defaultValue={searchParams.get('status') || ''} onValueChange={(status) => {
             const params = new URLSearchParams(searchParams)
             if (status) params.set("status", status)
+            params.set("page", "1")
             const query = params.size ? `?${params.toString()}` : "0"
             router.push(query)
         }}>
