@@ -1,6 +1,6 @@
 import React from 'react'
 import prisma from '@/prisma/db'
-import DataTable from './DataTable'
+import DataTable from './_components/DataTable'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -45,7 +45,7 @@ const Tickets = async ({ searchParams }: { searchParams: SearchParams }) => {
   return (
     <div className='px-5 mb-5 h-full flex flex-col'>
       <div className='flex justify-between'>
-        <Link href="/tickets/new" className={cn(buttonVariants({ variant: "default" }), 'inline w-fit')}>New Ticket</Link>
+        <Link href="/tickets/new" className={cn(buttonVariants({ variant: "default" }), 'w-fit')}>New Ticket</Link>
         <div>
           <StatusFilter />
         </div>

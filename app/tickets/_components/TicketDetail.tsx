@@ -14,7 +14,7 @@ import dayjs from 'dayjs'
 import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import ReactMarkDown from 'react-markdown'
-import DeleteTicketButton from '@/app/tickets/[id]/DeleteTicketButton'
+import DeleteTicketButton from '@/app/tickets/_components/DeleteTicketButton'
 
 interface Props {
     ticket: Ticket

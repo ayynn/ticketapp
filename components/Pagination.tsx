@@ -19,15 +19,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Input } from './ui/input'
-import { Button } from './ui/button'
 
 interface Props {
     itemCount: number
     pageSize: number
     currentPage: number
+    className?: string
 }
 
-function PaginationC({ itemCount, pageSize, currentPage }: Props) {
+function PaginationC({ itemCount, pageSize, currentPage, className }: Props) {
     const pageCount = Math.ceil(itemCount / pageSize)
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -45,7 +45,7 @@ function PaginationC({ itemCount, pageSize, currentPage }: Props) {
         params.set('page', '1')
         router.push("?" + params.toString())
     }
-    const pageSizes = Array.from(new Set([5, 10, 15, 20, 50, 100, pageSize].sort((a, b) => a - b)))
+    const pageSizes = Array.from(new Set([2, 5, 10, 15, 20, 50, 100, pageSize].sort((a, b) => a - b)))
     const distanceFromEnd = pageCount - currentPage
     const distanceFromStart = 3 - currentPage
     let paginationRange = [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2]
@@ -75,7 +75,7 @@ function PaginationC({ itemCount, pageSize, currentPage }: Props) {
         }
     }
     return (
-        <Pagination>
+        <Pagination className={className}>
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious onClick={() => changePage(currentPage - 1)} disabled={currentPage == 1} />

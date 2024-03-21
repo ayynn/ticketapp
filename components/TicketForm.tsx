@@ -44,7 +44,6 @@ const TicketForm = ({ ticket }: Props) => {
                 method: ticket ? "PATCH" : "POST",
                 data: values,
             })
-            console.log('resss', data, success)
             setIsSubmitting(false)
             if (success) {
                 toast({

@@ -10,7 +10,6 @@ instance.interceptors.request.use(config => {
 })
 
 instance.interceptors.response.use(response => {
-    console.log('response', response)
     const returnObj = {
         data: response.data,
         success: false,
@@ -35,7 +34,7 @@ const requestInstance = <T = any>(config: AxiosRequestConfig) => {
         return {
             success: false,
             data: null,
-            msg: err
+            msg: err.response.data.message || err.message
         }
     })
 }
