@@ -33,6 +33,7 @@ const Users = async ({ searchParams }: Props) => {
         },
       }
     ],
+    isDeleted: false,
     role: role || undefined
   }
 

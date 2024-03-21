@@ -16,9 +16,19 @@ const ViewTicket = async ({ params }: Props) => {
             id: parseInt(params.id)
         }
     })
+    const users = await prisma.user.findMany(
+        {
+            where: {
+                role: 'USER',
+                NOT: {
+                    isDeleted: true
+                }
+            }
+        }
+    )
     if (!ticket) return notfound
     return (
-        <TicketDetail ticket={ticket} />
+        <TicketDetail ticket={ticket} users={users} />
     )
 }
 

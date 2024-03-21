@@ -28,7 +28,7 @@ instance.interceptors.response.use(response => {
 
 
 const requestInstance = <T = any>(config: AxiosRequestConfig) => {
-    return instance<T, { data: T, success: boolean }, any>(config).then(res => {
+    return instance<T, AxiosResponse<{ data: T, success: boolean, msg: string }>, any>(config).then(res => {
         return res.data
     }).catch(err => {
         return {

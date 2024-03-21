@@ -37,15 +37,20 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     return NextResponse.json(updateUser)
 }
 
-// export async function DELETE(request: NextRequest, { params }: Props) {
-//     const ticket = await prisma.ticket.findUnique({ where: { id: parseInt(params.id) } })
-//     if (!ticket) {
-//         return NextResponse.json({ error: "Ticket not found" }, { status: 404 })
-//     }
-//     const deleteresult = await prisma.ticket.delete({ where: { id: ticket.id } })
-//     if (deleteresult) {
-//         return NextResponse.json({ message: "Ticket deleted", data: deleteresult })
-//     } else {
-//         return NextResponse.json({ error: "Delete ticked failed" }, { status: 404 })
-//     }
-// }
+export async function DELETE(request: NextRequest, { params }: Props) {
+    const user = await prisma.user.findUnique({ where: { id: parseInt(params.id) } })
+    if (!user) {
+        return NextResponse.json({ error: "User not found" }, { status: 404 })
+    }
+    const deleteresult = await prisma.user.update({
+        where: { id: user.id }, data: {
+            isDeleted: true
+        }
+    })
+    console.log(deleteresult)
+    if (deleteresult) {
+        return NextResponse.json({ message: "User deleted", data: deleteresult })
+    } else {
+        return NextResponse.json({ error: "Delete user failed" }, { status: 404 })
+    }
+}

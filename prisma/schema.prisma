@@ -45,6 +45,7 @@ model User {
   password        String   @db.VarChar(255)
   role            Role     @default(USER)
   assignedTickets Ticket[]
+  isDeleted       Boolean  @default(false)
 }
 
 enum Role {
