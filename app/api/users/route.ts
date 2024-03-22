@@ -2,10 +2,12 @@ import { userSchema } from "@/ValidationSchemas/users";
 import prisma from "@/prisma/db";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import useSessionCheck from "@/lib/useSessionCheck";
 
-export async function POST(request: NextRequest) {
+export const POST = async (request: NextRequest) => {
+    const checked = await useSessionCheck()
+    if (!checked) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     const body = await request.json()
-    console.log(body)
     const validation = userSchema.safeParse(body)
     if (!validation.success) {
         return NextResponse.json(validation.error.format(), { status: 400 })

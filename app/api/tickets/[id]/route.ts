@@ -1,4 +1,5 @@
 import { ticketSchema, ticketPatchSchema } from "@/ValidationSchemas/ticket";
+import useSessionCheck from "@/lib/useSessionCheck";
 import prisma from "@/prisma/db";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,7 +7,9 @@ interface Props {
     params: { id: string }
 }
 
-export async function PATCH(request: NextRequest, { params }: Props) {
+export const PATCH = async (request: NextRequest, { params }: Props) => {
+    const checked = await useSessionCheck()
+    if (!checked) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     const body = await request.json()
     const validation = ticketPatchSchema.safeParse(body)
     if (!validation.success) {
@@ -29,7 +32,9 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     return NextResponse.json(updateTicket)
 }
 
-export async function DELETE(request: NextRequest, { params }: Props) {
+export const DELETE = async (request: NextRequest, { params }: Props) => {
+    const checked = await useSessionCheck()
+    if (!checked) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     const ticket = await prisma.ticket.findUnique({ where: { id: parseInt(params.id) } })
     if (!ticket) {
         return NextResponse.json({ error: "Ticket not found" }, { status: 404 })

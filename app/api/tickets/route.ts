@@ -1,8 +1,13 @@
 import { ticketSchema } from "@/ValidationSchemas/ticket";
+import useSessionCheck from "@/lib/useSessionCheck";
 import prisma from "@/prisma/db";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export const POST = async (request: NextRequest) => {
+
+    const checked = await useSessionCheck()
+    if (!checked) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+
     const body = await request.json()
     const validation = ticketSchema.safeParse(body)
     if (!validation.success) {

@@ -1,26 +1,23 @@
-'use client'
 import Link from 'next/link';
 import React from 'react';
 import ToggleMode from './ToggleMode';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import MainNavLinks from './MainNavLinks';
+import { getServerSession } from 'next-auth';
+import options from '@/app/api/auth/[...nextauth]/options';
 
-const MainNav = () => {
-  const route = usePathname()
-  const routeCN = (path: string) => {
-    const condition = route.split('/').filter(Boolean)
-    if (condition.length == 0 && path == '') return cn('hover:text-primary', 'text-primary')
-    return cn('hover:text-primary', condition.includes(path) ? 'text-primary' : '')
-  }
+const MainNav = async () => {
+  const session = await getServerSession(options);
+
   return (
     <div className='flex justify-between'>
-      <div className='gap-2 flex items-center'>
-        <Link className={routeCN('')} href='/'>Dashboard</Link>
-        <Link className={routeCN('tickets')} href='/tickets'>Tickets</Link>
-        <Link className={routeCN('users')} href='/users'>Users</Link>
-      </div>
+      <MainNavLinks role={session?.user.role} />
       <div className='flex items-center gap-2'>
-        <Link className={routeCN('logout')} href='/'>Logout</Link>
+        {session && <div>{session.user.name}</div>}
+        {session ? (
+          <Link href='/api/auth/signout?callbackUrl=/'>Logout</Link>
+        ) : (
+          <Link href='/api/auth/signin'>Login</Link>
+        )}
         <ToggleMode />
       </div>
     </div>
