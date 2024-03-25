@@ -11,8 +11,8 @@ interface Props {
 }
 
 export const PATCH = async (request: NextRequest, { params }: Props) => {
-    const checked = await useSessionCheck()
-    if (!checked) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    const session = await useSessionCheck()
+    if (!session) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     const body = await request.json()
     const validation = userSchema.safeParse(body)
     if (!validation.success) {

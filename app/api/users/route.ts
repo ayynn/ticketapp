@@ -3,10 +3,12 @@ import prisma from "@/prisma/db";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import useSessionCheck from "@/lib/useSessionCheck";
+import { Role } from "@prisma/client";
 
 export const POST = async (request: NextRequest) => {
-    const checked = await useSessionCheck()
-    if (!checked) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    const session = await useSessionCheck()
+    if (!session) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    if (session.user.role !== Role.ADMIN) return NextResponse.json({ error: "Not authorized" }, { status: 403 })
     const body = await request.json()
     const validation = userSchema.safeParse(body)
     if (!validation.success) {

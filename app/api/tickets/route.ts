@@ -5,8 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
 
-    const checked = await useSessionCheck()
-    if (!checked) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    const session = await useSessionCheck()
+    if (!session) return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
 
     const body = await request.json()
     const validation = ticketSchema.safeParse(body)

@@ -18,7 +18,7 @@ type UserFormData = z.infer<typeof userSchema>
 
 
 interface Props {
-    user?: Omit<User, 'password'>
+    user?: Omit<User, 'password'|'isDeleted'>
 }
 
 const roles = Object.keys(Role)

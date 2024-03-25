@@ -23,7 +23,6 @@ const options: NextAuthOptions = {
                 if (match) return user
                 return null
             },
-
         })
     ],
     callbacks: {
