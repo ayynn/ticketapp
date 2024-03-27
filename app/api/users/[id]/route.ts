@@ -25,8 +25,9 @@ export const PATCH = async (request: NextRequest, { params }: Props) => {
     if (body?.password && body.password != "") {
         const hashPassword = await bcrypt.hash(body.password, 10)
         body.password = hashPassword
+    }else{
+        delete body.password
     }
-    delete body.password
     if (user.userName !== body.userName) {
         const checkUserName = await prisma.user.findUnique({ where: { userName: body.userName } })
         if (checkUserName) {

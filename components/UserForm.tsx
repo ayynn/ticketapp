@@ -40,12 +40,11 @@ const UserForm = ({ user }: Props) => {
     async function onSubmit(values: UserFormData) {
         try {
             setIsSubmitting(true)
-            const { data, success, msg } = await axios({
+            const { success, msg } = await axios({
                 url: `/api/users${user ? `/${user.id}` : ''}`,
                 method: user ? "PATCH" : "POST",
                 data: values,
             })
-            console.log(data, success)
             setIsSubmitting(false)
             toast({
                 title: msg || ((user ? "Update" : "Create") + ` User ${success ? "Success" : "Failed"}`),

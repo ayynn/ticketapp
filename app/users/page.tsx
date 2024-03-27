@@ -19,12 +19,6 @@ interface Props {
 }
 
 const Users = async ({ searchParams }: Props) => {
-
-  // const session = await getServerSession(options)
-  // if (session?.user.role != Role.ADMIN) {
-  //   return <div className='text-destructive'>You are not authorized to view this page</div>
-  // }
-
   const { pageSize: ps, page: cp, userName, role } = searchParams
   const pageSize = parseInt(ps || '10')
   const currentPage = parseInt(cp || '1')

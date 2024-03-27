@@ -32,4 +32,9 @@ const ViewTicket = async ({ params }: Props) => {
     )
 }
 
+export async function generateStaticParams() {
+    const tickets = (await prisma.ticket.findMany()).filter(ticket => ticket.id <= 10)
+    return tickets.map(ticket => ({ id: ticket.id.toString() }))
+}
+
 export default ViewTicket

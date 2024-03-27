@@ -1,10 +1,9 @@
 import UserForm from '@/components/UserForm'
 import prisma from '@/prisma/db'
 import React from 'react'
-
 interface Props {
     params: {
-        id: string
+        id:string
     }
 }
 
@@ -28,6 +27,17 @@ const EditUser = async ({ params }: Props) => {
     return (
         <UserForm user={user} />
     )
+}
+
+export async function generateStaticParams() {
+    const users=(await prisma.user.findMany({
+        where:{
+            NOT:{
+                isDeleted:true
+            }
+        }
+    })).filter(user=>user.id<=10)
+    return users.map(user=>({id:user.id.toString()}))
 }
 
 export default EditUser

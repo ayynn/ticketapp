@@ -11,7 +11,7 @@ import {
 import TicketStatusBadge from '@/components/TicketStatusBadge'
 import TicketPriority from '@/components/TicketPriority'
 import dayjs from 'dayjs'
-import { buttonVariants } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import ReactMarkDown from 'react-markdown'
 import DeleteTicketButton from '@/app/tickets/_components/DeleteTicketButton'
@@ -48,6 +48,9 @@ const TicketDetail = ({ ticket, users }: Props) => {
                     variant: "default"
                 })}`}>Edit Ticket</Link>
                 <DeleteTicketButton id={ticket.id} />
+                <Link href={`/tickets`} className={`${buttonVariants({
+                    variant: "secondary"
+                })}`}>Back</Link>
             </div>
         </div>
 
