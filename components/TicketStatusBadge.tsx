@@ -15,7 +15,7 @@ const statusColorMap: Record<Status, { label: string; color: "bg-red-400" | "bg-
 
 function TicketStatusBadge({ status }: Props) {
     const { color, label } = statusColorMap[status]
-    return <Badge className={cn(color, 'text-background', `hover:${color}`)}>
+    return <Badge className={cn(color, 'text-background', `hover:${color} min-w-[66px] justify-center`)}>
         {label}
     </Badge>
 }
