@@ -50,10 +50,10 @@ const Dashboard = async ({ searchParams }: { searchParams: searchParams }) => {
   return (
     <div className='h-full'>
       <div className='grid gap-4 md:grid-cols-2 grid-rows-1 px-2 h-full'>
-        <div className='h-full overflow-y-scroll'>
+        <div className='h-full flex flex-col'>
           <DashRecentTickets page={page} pageSize={pageSize} total={ticketCount} tickets={tickets} />
         </div>
-        <div>
+        <div className='h-full pb-16'>
           <DashCharts data={data} />
         </div>
       </div>

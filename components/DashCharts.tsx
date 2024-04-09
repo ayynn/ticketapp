@@ -15,7 +15,7 @@ interface Props {
 
 const DashCharts = ({ data }: Props) => {
     return (
-        <Card className='col-span-4'>
+        <Card className='col-span-4 h-full'>
             <CardHeader>
                 <CardTitle>Charts</CardTitle>
             </CardHeader>

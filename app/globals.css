@@ -63,7 +63,13 @@
 
 @layer components {
     .no-input-number-spin::-webkit-inner-spin-button {
-       -webkit-appearance: none;
-       margin: 0;
-   }
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .no-scroll-bar {
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
 }

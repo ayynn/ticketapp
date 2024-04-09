@@ -22,7 +22,7 @@ interface Props {
 const RecentTickets = ({ tickets, page, pageSize, total }: Props) => {
     return (
         <>
-            <Card className='col-span-3'>
+            <Card className='col-span-3 flex-1 overflow-y-scroll no-scroll-bar'>
                 <CardHeader>
                     <CardTitle>
                         Recently Updated
@@ -47,7 +47,7 @@ const RecentTickets = ({ tickets, page, pageSize, total }: Props) => {
                     </div>
                 </CardContent>
             </Card>
-            <Pagination pageSize={pageSize} itemCount={total} currentPage={page}></Pagination>
+            <Pagination className='mb-4' pageSize={pageSize} itemCount={total} currentPage={page}></Pagination>
         </>
     )
 }
